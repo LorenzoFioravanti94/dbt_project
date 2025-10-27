@@ -47,3 +47,9 @@ models:
         data_tests:
           - unique
           - not_null
+  - name: stg_tpch_sf1__supplier
+    columns:
+      - name: supplier_id
+        data_tests:
+          - unique
+          - not_null
