@@ -1,3 +1,9 @@
+{{ config(
+    materialized='incremental',
+    unique_key='order_id'
+) }}
+
+
 WITH
 base_order AS (
     SELECT *
@@ -18,3 +24,8 @@ refined AS (
 )
 SELECT *
 FROM refined
+
+{% if is_incremental() %}
+  -- Carica solo gli ordini nuovi rispetto alla tabella già esistente
+  where order_date > (select max(order_date) from {{ this }})
+{% endif %}
