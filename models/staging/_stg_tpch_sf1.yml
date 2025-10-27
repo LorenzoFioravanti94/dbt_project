@@ -81,4 +81,15 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: region_id
+        data_tests:
+          - relationships:
+              field: region_id
+              to: ref('stg_tpch_sf1__country_region')
+  - name: stg_tpch_sf1__country_region
+    columns:
+      - name: region_id
+        data_tests:
+          - unique
+          - not_null
           
