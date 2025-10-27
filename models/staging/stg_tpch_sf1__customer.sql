@@ -8,7 +8,7 @@ refined AS (
         c_custkey AS customer_id,
         SUBSTRING(c_name, 10, 10) AS customer_code,
         c_address AS encrypted_address,
-        c_nationkey AS country_code,
+        c_nationkey AS country_id,
         c_phone AS phone,
         c_acctbal AS account_balance,
         c_mktsegment AS market_segment,

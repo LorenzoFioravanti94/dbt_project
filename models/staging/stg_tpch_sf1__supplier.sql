@@ -8,7 +8,7 @@ refined AS (
         s_suppkey AS supplier_id,
         SUBSTRING(s_name, 10, 10) AS supplier_code,
         s_address AS encrypted_address,
-        s_nationkey AS country_code,
+        s_nationkey AS country_id,
         s_phone AS phone,
         s_acctbal AS account_balance,
         s_comment AS comment

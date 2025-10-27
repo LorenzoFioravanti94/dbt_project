@@ -5,6 +5,11 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: country_id
+        data_tests:
+          - relationships:
+              field: country_id
+              to: ref('stg_tpch_sf1__country')
       - name: market_segment
         data_tests:
           - accepted_values:
@@ -53,6 +58,11 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: country_id
+        data_tests:
+          - relationships:
+              field: country_id
+              to: ref('stg_tpch_sf1__country')
   - name: stg_tpch_sf1__part_supplier
     columns:
       - name: part_id
@@ -65,3 +75,10 @@ models:
           - relationships:
               field: supplier_id
               to: ref('stg_tpch_sf1__supplier')
+  - name: stg_tpch_sf1__country
+    columns:
+      - name: country_id
+        data_tests:
+          - unique
+          - not_null
+          
