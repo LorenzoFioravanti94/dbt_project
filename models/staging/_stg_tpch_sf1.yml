@@ -92,4 +92,45 @@ models:
         data_tests:
           - unique
           - not_null
+  - name: stg_tpch_sf1__line_item
+    columns:
+      - name: order_id
+        data_tests:
+          - relationships:
+              field: order_id
+              to: ref('stg_tpch_sf1__orders')
+      - name: part_id
+        data_tests:
+          - relationships:
+              field: part_id
+              to: ref('stg_tpch_sf1__part')
+      - name: supplier_id
+        data_tests:
+          - relationships:
+              field: supplier_id
+              to: ref('stg_tpch_sf1__supplier')
+      - name: return_flag
+        data_tests:
+          - accepted_values:
+              values:
+                - N
+                - R
+                - A
+      - name: line_status
+        data_tests:
+          - accepted_values:
+              values:
+                - O
+                - F
+      - name: ship_mode
+        data_tests:
+          - accepted_values:
+              values:
+                - TRUCK
+                - AIR
+                - MAIL
+                - SHIP
+                - RAIL
+                - FOB
+                - REG AIR
           
