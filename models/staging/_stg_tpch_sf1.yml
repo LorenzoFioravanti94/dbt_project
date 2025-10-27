@@ -1,0 +1,7 @@
+models:
+  - name: stg_tpch_sf1__customers
+    columns:
+      - name: customer_id
+        data_tests:
+          - unique
+          - not_null
