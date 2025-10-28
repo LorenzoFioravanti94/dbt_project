@@ -6,7 +6,7 @@ base_cr AS (
 refined AS (
     SELECT
         r_regionkey AS region_id,
-        r_name AS name,
+        r_name AS region_name,
         r_comment AS comment
     FROM base_cr
 )

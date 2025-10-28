@@ -1,0 +1,31 @@
+models:
+  - name: trans_tpch_sf1__customer
+    columns:
+      - name: customer_code
+        description: TRIM(customer_code) guarantees no spaces (being a string)
+      - name: account_balance
+        description: COALESCE(account_balance, 0) guarantees not null column and avoids error for high_value_customer computation
+        data_tests:
+          - not_null
+      - name: market_segment
+        description: COALESCE(UPPER(TRIM(market_segment)), 'UNKNOWN') guarantees not null column, upper case and no spaces
+        data_tests:
+          - not_null
+      - name: high_value_customer
+        description: true when account_balance > avg of all account balances, false otherwise
+        data_tests:
+          - accepted_values:
+              values:
+                - TRUE
+                - FALSE
+  - name: trans_tpch_sf1__country_per_region
+    columns:
+      - name: country_name
+        description: COALESCE(UPPER(TRIM(country_name)), 'UNKNOWN') guarantees not null column, upper case and no spaces
+        data_tests:
+          - not_null
+      - name: region_name
+        description: COALESCE(UPPER(TRIM(region_name)), 'UNKNOWN') guarantees not null column, upper case and no spaces
+        data_tests:
+          - not_null
+      

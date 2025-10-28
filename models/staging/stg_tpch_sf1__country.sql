@@ -6,7 +6,7 @@ base_country AS (
 refined AS (
     SELECT
         n_nationkey AS country_id,
-        n_name AS country,
+        n_name AS country_name,
         n_regionkey AS region_id,
         n_comment AS comment
     FROM base_country
