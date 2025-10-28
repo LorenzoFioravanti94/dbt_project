@@ -38,4 +38,12 @@ models:
         description: UPPER(TRIM(colour_description)) guarantees upper case and no spaces
       - name: material_description
         description: UPPER(TRIM(material_description)) guarantees upper case and no spaces
+  - name: trans_tpch_sf1__supplier
+    columns:
+      - name: phone
+        description: TRIM(phone) guarantees no spaces
+      - name: account_balance
+        description: COALESCE(account_balance, 0) guarantees not null column
+        data_tests:
+          - not_null
       
