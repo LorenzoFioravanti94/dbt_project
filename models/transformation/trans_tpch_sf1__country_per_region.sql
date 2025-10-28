@@ -8,11 +8,11 @@ stage_country_region AS(
     FROM {{ ref('stg_tpch_sf1__country_region') }}
 ),
 
-trans_country AS( --remove spaces and forces upper case
+trans_country AS(
     SELECT country_id, region_id, COALESCE(UPPER(TRIM(country_name)), 'UNKNOWN') AS country_name
     FROM stage_country
 ),
-trans_country_region AS( --remove spaces and forces upper case
+trans_country_region AS(
     SELECT region_id, COALESCE(UPPER(TRIM(region_name)), 'UNKNOWN') AS region_name
     FROM stage_country_region
 ),

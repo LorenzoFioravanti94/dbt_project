@@ -28,4 +28,14 @@ models:
         description: COALESCE(UPPER(TRIM(region_name)), 'UNKNOWN') guarantees not null column, upper case and no spaces
         data_tests:
           - not_null
+  - name: trans_tpch_sf1__part
+    columns:
+      - name: manufacturer
+        description: casted to INTEGER
+      - name: brand
+        description: casted to INTEGER
+      - name: colour_description
+        description: UPPER(TRIM(colour_description)) guarantees upper case and no spaces
+      - name: material_description
+        description: UPPER(TRIM(material_description)) guarantees upper case and no spaces
       
