@@ -46,4 +46,10 @@ models:
         description: COALESCE(account_balance, 0) guarantees not null column
         data_tests:
           - not_null
-      
+  - name: trans_tpch_sf1__order_priority
+    description: model that associates every priority_id code to its description
+    columns:
+      - name: priority_id
+        data_tests:
+          - unique
+          - not_null
