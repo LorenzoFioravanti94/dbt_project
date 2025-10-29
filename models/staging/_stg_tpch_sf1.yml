@@ -5,3 +5,154 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: customer_code
+        description: removed 'Customer#' from source
+      - name: country_id
+        data_tests:
+          - relationships:
+              field: country_id
+              to: ref('stg_tpch_sf1__country')
+      - name: market_segment
+        data_tests:
+          - accepted_values:
+              values:
+                - AUTOMOBILE
+                - MACHINERY
+                - BUILDING
+                - HOUSEHOLD
+                - FURNITURE
+  - name: stg_tpch_sf1__orders
+    columns:
+      - name: order_id
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_id
+        data_tests:
+          - relationships:
+              field: customer_id
+              to: ref('stg_tpch_sf1__customers')
+      - name: status
+        data_tests:
+          - accepted_values:
+              values:
+                - F
+                - O
+                - P
+      - name: order_priority
+        data_tests:
+          - accepted_values:
+              values:
+                - 1-URGENT
+                - 2-HIGH
+                - 3-MEDIUM
+                - 4-NOT SPECIFIED
+                - 5-LOW
+      - name: clerk
+        description: removed 'Clerk#' from source
+  - name: stg_tpch_sf1__part
+    columns:
+      - name: part_id
+        data_tests:
+          - unique
+          - not_null
+      - name: manufacturer
+        description: removed 'Manufacturer#' from source
+      - name: brand
+        description: removed 'Brand#' from source
+  - name: stg_tpch_sf1__supplier
+    columns:
+      - name: supplier_id
+        data_tests:
+          - unique
+          - not_null
+      - name: supplier_code
+        description: removed 'Supplier#' from source
+      - name: country_id
+        data_tests:
+          - relationships:
+              field: country_id
+              to: ref('stg_tpch_sf1__country')
+  - name: stg_tpch_sf1__part_supplier
+    columns:
+      - name: part_id
+        data_tests:
+          - relationships:
+              field: part_id
+              to: ref('stg_tpch_sf1__part')
+      - name: supplier_id
+        data_tests:
+          - relationships:
+              field: supplier_id
+              to: ref('stg_tpch_sf1__supplier')
+  - name: stg_tpch_sf1__country
+    columns:
+      - name: country_id
+        data_tests:
+          - unique
+          - not_null
+      - name: region_id
+        data_tests:
+          - relationships:
+              field: region_id
+              to: ref('stg_tpch_sf1__country_region')
+  - name: stg_tpch_sf1__country_region
+    columns:
+      - name: region_id
+        data_tests:
+          - unique
+          - not_null
+  - name: stg_tpch_sf1__line_item
+    columns:
+      - name: order_id
+        data_tests:
+          - relationships:
+              field: order_id
+              to: ref('stg_tpch_sf1__orders')
+      - name: part_id
+        data_tests:
+          - relationships:
+              field: part_id
+              to: ref('stg_tpch_sf1__part')
+      - name: supplier_id
+        data_tests:
+          - relationships:
+              field: supplier_id
+              to: ref('stg_tpch_sf1__supplier')
+      - name: discount_percentage
+        description: discount value converted to percentage
+      - name: tax_percentage
+        description: tax value converted to percentage
+      - name: return_flag
+        data_tests:
+          - accepted_values:
+              values:
+                - N
+                - R
+                - A
+      - name: line_status
+        data_tests:
+          - accepted_values:
+              values:
+                - O
+                - F
+      - name: ship_instructions
+        data_tests:
+          - accepted_values:
+              values:
+                - COLLECT COD
+                - NONE
+                - DELIVER IN PERSON
+                - TAKE BACK RETURN
+      - name: ship_mode
+        data_tests:
+          - accepted_values:
+              values:
+                - TRUCK
+                - AIR
+                - MAIL
+                - SHIP
+                - RAIL
+                - FOB
+                - REG AIR
+          

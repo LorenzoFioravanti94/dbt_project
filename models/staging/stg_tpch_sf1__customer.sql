@@ -6,9 +6,9 @@ base_customer AS (
 refined AS (
     SELECT
         c_custkey AS customer_id,
-        SUBSTRING(c_name, 10, 10) AS name,
+        SUBSTRING(c_name, 10, 10) AS customer_code,
         c_address AS encrypted_address,
-        c_nationkey AS nationkey,
+        c_nationkey AS country_id,
         c_phone AS phone,
         c_acctbal AS account_balance,
         c_mktsegment AS market_segment,

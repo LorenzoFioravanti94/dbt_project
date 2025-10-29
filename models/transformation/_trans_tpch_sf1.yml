@@ -1,0 +1,86 @@
+models:
+  - name: trans_tpch_sf1__customer
+    columns:
+      - name: customer_code
+        description: TRIM(customer_code) guarantees no spaces (being a string)
+      - name: account_balance
+        description: COALESCE(account_balance, 0) guarantees not null column and avoids error for high_value_customer computation
+        data_tests:
+          - not_null
+      - name: market_segment
+        description: COALESCE(UPPER(TRIM(market_segment)), 'UNKNOWN') guarantees not null column, upper case and no spaces
+        data_tests:
+          - not_null
+      - name: high_value_customer
+        description: true when account_balance > avg of all account balances, false otherwise
+        data_tests:
+          - accepted_values:
+              values:
+                - TRUE
+                - FALSE
+  - name: trans_tpch_sf1__country_per_region
+    columns:
+      - name: country_name
+        description: COALESCE(UPPER(TRIM(country_name)), 'UNKNOWN') guarantees not null column, upper case and no spaces
+        data_tests:
+          - not_null
+      - name: region_name
+        description: COALESCE(UPPER(TRIM(region_name)), 'UNKNOWN') guarantees not null column, upper case and no spaces
+        data_tests:
+          - not_null
+  - name: trans_tpch_sf1__part
+    columns:
+      - name: manufacturer
+        description: casted to INTEGER
+      - name: brand
+        description: casted to INTEGER
+      - name: colour_description
+        description: UPPER(TRIM(colour_description)) guarantees upper case and no spaces
+      - name: material_description
+        description: UPPER(TRIM(material_description)) guarantees upper case and no spaces
+  - name: trans_tpch_sf1__supplier
+    columns:
+      - name: phone
+        description: TRIM(phone) guarantees no spaces
+      - name: account_balance
+        description: COALESCE(account_balance, 0) guarantees not null column
+        data_tests:
+          - not_null
+  - name: trans_tpch_sf1__order_priority
+    description: model that associates every priority_id code to its description
+    columns:
+      - name: priority_id
+        data_tests:
+          - unique
+          - not_null
+  - name: trans_tpch_sf1__orders_line_item_part_supplier
+    description: model that associates staging models for orders, line_item and part_supplier
+    columns:
+      - name: order_status
+        description: UPPER(TRIM(status)) guarantees upper case and no spaces
+      - name: line_status
+        description: UPPER(TRIM(line_status)) guarantees upper case and no spaces
+      - name: return_flag
+        description: UPPER(TRIM(return_flag)) guarantees upper case and no spaces
+      - name: order_priority
+        description: SUBSTRING(order_priority, 1, 1)::INTEGER guarantees an integer key to reference the order priority description
+      - name: sold_quantity
+        description: quantity::INTEGER forces it to be integer
+      - name: stock_quantity
+        description: available_quantity::INTEGER forces it to be integer
+      - name: order_total_price
+        description: COALESCE(price, 0) guarantees not null column
+        data_tests:
+          - not_null
+      - name: line_price
+        description: COALESCE(extended_price, 0) guarantees not null column
+        data_tests:
+          - not_null
+      - name: line_discount_percentage
+        description: casted to integer because it is percentage
+      - name: line_tax_percentage
+        description: casted to integer because it is percentage
+      - name: ship_mode
+        description: UPPER(TRIM(ship_mode)) guarantees upper case and no spaces
+      - name: ship_instructions
+        description: UPPER(TRIM(ship_instructions)) guarantees upper case and no spaces
