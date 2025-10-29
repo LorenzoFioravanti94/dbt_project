@@ -53,3 +53,34 @@ models:
         data_tests:
           - unique
           - not_null
+  - name: trans_tpch_sf1__orders_line_item_part_supplier
+    description: model that associates staging models for orders, line_item and part_supplier
+    columns:
+      - name: order_status
+        description: UPPER(TRIM(status)) guarantees upper case and no spaces
+      - name: line_status
+        description: UPPER(TRIM(line_status)) guarantees upper case and no spaces
+      - name: return_flag
+        description: UPPER(TRIM(return_flag)) guarantees upper case and no spaces
+      - name: order_priority
+        description: SUBSTRING(order_priority, 1, 1)::INTEGER guarantees an integer key to reference the order priority description
+      - name: sold_quantity
+        description: quantity::INTEGER forces it to be integer
+      - name: stock_quantity
+        description: available_quantity::INTEGER forces it to be integer
+      - name: order_total_price
+        description: COALESCE(price, 0) guarantees not null column
+        data_tests:
+          - not_null
+      - name: line_price
+        description: COALESCE(extended_price, 0) guarantees not null column
+        data_tests:
+          - not_null
+      - name: line_discount_percentage
+        description: casted to integer because it is percentage
+      - name: line_tax_percentage
+        description: casted to integer because it is percentage
+      - name: ship_mode
+        description: UPPER(TRIM(ship_mode)) guarantees upper case and no spaces
+      - name: ship_instructions
+        description: UPPER(TRIM(ship_instructions)) guarantees upper case and no spaces

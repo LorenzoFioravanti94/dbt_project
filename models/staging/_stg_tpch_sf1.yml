@@ -136,6 +136,14 @@ models:
               values:
                 - O
                 - F
+      - name: ship_instructions
+        data_tests:
+          - accepted_values:
+              values:
+                - COLLECT COD
+                - NONE
+                - DELIVER IN PERSON
+                - TAKE BACK RETURN
       - name: ship_mode
         data_tests:
           - accepted_values:
