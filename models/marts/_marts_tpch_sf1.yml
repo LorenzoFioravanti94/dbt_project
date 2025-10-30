@@ -13,3 +13,8 @@ models:
           - relationships:
               field: geography_id
               to: ref('dim_geography')
+  - name: dim_priority
+    columns:
+      - name: priority_id
+        description: Primary Key
+  
