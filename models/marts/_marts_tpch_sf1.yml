@@ -17,4 +17,7 @@ models:
     columns:
       - name: priority_id
         description: Primary Key
-  
+  - name: dim_part
+    columns:
+      - name: part_id
+        description: Primary Key
