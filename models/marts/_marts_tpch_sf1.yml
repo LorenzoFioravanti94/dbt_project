@@ -1,0 +1,5 @@
+models:
+  - name: dim_geography
+    columns:
+      - name: country_id
+        description: Primary Key
