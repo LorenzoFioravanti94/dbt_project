@@ -31,3 +31,10 @@ models:
           - relationships:
               field: geography_id
               to: ref('dim_geography')
+  - name: dim_date
+    columns:
+      - name: date_id
+        description: Primary Key. ATTENTION - this model must always be full refreshed, in order to be able to generate new PKs for new entries
+        data_tests:
+          - unique
+          - not_null
