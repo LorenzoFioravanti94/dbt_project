@@ -1,5 +1,15 @@
 models:
   - name: dim_geography
     columns:
-      - name: country_id
+      - name: geography_id
         description: Primary Key
+  - name: dim_customer
+    columns:
+      - name: customer_id
+        description: Primary Key
+      - name: geography_id
+        description: Foreign Key -> dim_geography
+        data_tests:
+          - relationships:
+              field: geography_id
+              to: ref('dim_geography')
