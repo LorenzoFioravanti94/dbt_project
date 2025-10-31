@@ -1,0 +1,96 @@
+models:
+  - name: dim_geography
+    columns:
+      - name: geography_id
+        description: Primary Key
+  - name: dim_customer
+    columns:
+      - name: customer_id
+        description: Primary Key
+      - name: geography_id
+        data_tests:
+          - relationships:
+              field: geography_id
+              to: ref('dim_geography')
+  - name: dim_priority
+    columns:
+      - name: priority_id
+        description: Primary Key
+  - name: dim_part
+    columns:
+      - name: part_id
+        description: Primary Key
+  - name: dim_supplier
+    columns:
+      - name: supplier_id
+        description: Primary Key
+      - name: geography_id
+        data_tests:
+          - relationships:
+              field: geography_id
+              to: ref('dim_geography')
+  - name: dim_date
+    columns:
+      - name: date_id
+        description: Primary Key. ATTENTION - this model must always be full refreshed, in order to be able to generate new PKs for new entries
+        data_tests:
+          - unique
+          - not_null
+  - name: fact_sale_line
+    columns:
+      - name: sale_line_id
+        description: Primary Key. ATTENTION - this model must always be full refreshed, in order to be able to generate new PKs for new entries
+        data_tests:
+          - unique
+          - not_null
+      - name: part_id
+        data_tests:
+          - relationships:
+              field: part_id
+              to: ref('dim_part')
+      - name: supplier_id
+        data_tests:
+          - relationships:
+              field: supplier_id
+              to: ref('dim_supplier')
+      - name: customer_id
+        data_tests:
+          - relationships:
+              field: customer_id
+              to: ref('dim_customer')
+      - name: order_date_id
+        data_tests:
+          - relationships:
+              field: date_id
+              to: ref('dim_date')
+      - name: ship_date_id
+        data_tests:
+          - relationships:
+              field: date_id
+              to: ref('dim_date')
+      - name: commit_date_id
+        data_tests:
+          - relationships:
+              field: date_id
+              to: ref('dim_date')
+      - name: receipt_date_id
+        data_tests:
+          - relationships:
+              field: date_id
+              to: ref('dim_date')
+      - name: order_priority
+        data_tests:
+          - relationships:
+              field: priority_id
+              to: ref('dim_priority')
+      - name: line_tax_amount
+        description: calculated as ROUND((line_gross_price * (1 - discount_percentage / 100.0) * (tax_percentage / 100.0)), 2)
+      - name: line_profit
+        description: calulated as ROUND((line_net_price - (supply_cost * sold_quantity)), 2)
+      - name: is_discounted
+        description: true when applied discount, false otherwise
+        data_tests:
+          - accepted_values:
+              values:
+                - TRUE
+                - FALSE

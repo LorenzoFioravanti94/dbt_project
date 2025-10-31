@@ -60,8 +60,3 @@ final_line_item_per_order_part_supplier AS (
 SELECT *
 FROM final_line_item_per_order_part_supplier
 ORDER BY order_id ASC
-
-
-
--- line_net_price = line_gross_price * (1 - discount_percentage / 100.0) * (1 + tax_percentage / 100.0) AS line_net_price
--- or line_net_price = (line_gross_price - line_discount_value) * (1 + tax_percentage / 100)
