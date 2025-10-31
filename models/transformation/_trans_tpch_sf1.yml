@@ -53,7 +53,7 @@ models:
         data_tests:
           - unique
           - not_null
-  - name: trans_tpch_sf1__orders_line_item_part_supplier
+  - name: trans_tpch_sf1__sale_info
     description: model that associates staging models for orders, line_item and part_supplier with line_item granularity
     columns:
       - name: order_status

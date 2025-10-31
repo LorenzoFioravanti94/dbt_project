@@ -7,7 +7,7 @@
 WITH
 trans_orders_line_item_part_supplier AS(
     SELECT *
-    FROM {{ ref('trans_tpch_sf1__orders_line_item_part_supplier') }}
+    FROM {{ ref('trans_tpch_sf1__sale_info') }}
 ),
 dim_date AS(
     SELECT *

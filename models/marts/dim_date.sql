@@ -1,11 +1,11 @@
 WITH
-trans_orders_line_item_part_supplier AS(
+trans_sale_info AS(
     SELECT *
-    FROM {{ ref('trans_tpch_sf1__orders_line_item_part_supplier') }}
+    FROM {{ ref('trans_tpch_sf1__sale_info') }}
 ),
 date_enemble AS(
     SELECT order_date, ship_date, commit_date, receipt_date
-    FROM trans_orders_line_item_part_supplier
+    FROM trans_sale_info
 ),
 one_column_date_ensemble AS(
     SELECT order_date AS date_value
