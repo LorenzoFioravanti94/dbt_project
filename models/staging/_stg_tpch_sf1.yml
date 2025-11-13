@@ -7,6 +7,9 @@ models:
           - not_null
       - name: customer_code
         description: removed 'Customer#' from source
+      - name: encrypted_address
+        data_tests:
+          - unique
       - name: country_id
         data_tests:
           - relationships:
@@ -68,6 +71,9 @@ models:
           - not_null
       - name: supplier_code
         description: removed 'Supplier#' from source
+      - name: encrypted_address
+        data_tests:
+          - unique
       - name: country_id
         data_tests:
           - relationships:
