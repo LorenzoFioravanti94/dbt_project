@@ -1,35 +1,54 @@
 models:
   - name: dim_geography
+    description: contains info about countries and regions
+    config:
+      +required_docs: true
     columns:
       - name: geography_id
         description: Primary Key
   - name: dim_customer
+    config:
+      +required_docs: true
     columns:
       - name: customer_id
         description: Primary Key
       - name: geography_id
+        description: Foreign Key -> dim_geography
         data_tests:
           - relationships:
               field: geography_id
               to: ref('dim_geography')
   - name: dim_priority
+    description: associates a code to the different orders urgency messages
+    config:
+      +required_docs: true
     columns:
       - name: priority_id
         description: Primary Key
   - name: dim_part
+    description: contains info about sold parts for sale lines
+    config:
+      +required_docs: true
     columns:
       - name: part_id
         description: Primary Key
   - name: dim_supplier
+    description: contains info about sold parts suppliers for sale lines
+    config:
+      +required_docs: true
     columns:
       - name: supplier_id
         description: Primary Key
       - name: geography_id
+        description: Foreign Key -> dim_geography
         data_tests:
           - relationships:
               field: geography_id
               to: ref('dim_geography')
   - name: dim_date
+    description: contains a list of all dates stored in the database
+    config:
+      +required_docs: true
     columns:
       - name: date_id
         description: Primary Key. ATTENTION - this model must always be full refreshed, in order to be able to generate new PKs for new entries
@@ -37,6 +56,9 @@ models:
           - unique
           - not_null
   - name: fact_sale_line
+    description: contains all the info about sale process
+    config:
+      +required_docs: true
     columns:
       - name: sale_line_id
         description: Primary Key. ATTENTION - this model must always be full refreshed, in order to be able to generate new PKs for new entries
@@ -44,41 +66,49 @@ models:
           - unique
           - not_null
       - name: part_id
+        description: Foreign Key -> dim_part
         data_tests:
           - relationships:
               field: part_id
               to: ref('dim_part')
       - name: supplier_id
+        description: Foreign Key -> dim_supplier
         data_tests:
           - relationships:
               field: supplier_id
               to: ref('dim_supplier')
       - name: customer_id
+        description: Foreign Key -> dim_customer
         data_tests:
           - relationships:
               field: customer_id
               to: ref('dim_customer')
       - name: order_date_id
+        description: Foreign Key -> dim_date
         data_tests:
           - relationships:
               field: date_id
               to: ref('dim_date')
       - name: ship_date_id
+        description: Foreign Key -> dim_date
         data_tests:
           - relationships:
               field: date_id
               to: ref('dim_date')
       - name: commit_date_id
+        description: Foreign Key -> dim_date
         data_tests:
           - relationships:
               field: date_id
               to: ref('dim_date')
       - name: receipt_date_id
+        description: Foreign Key -> dim_date
         data_tests:
           - relationships:
               field: date_id
               to: ref('dim_date')
       - name: order_priority
+        description: Foreign Key -> dim_priority
         data_tests:
           - relationships:
               field: priority_id
