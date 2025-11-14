@@ -1,126 +1,193 @@
 models:
   - name: dim_geography
     description: contains info about countries and regions
-    config:
-      +required_docs: true
     columns:
       - name: geography_id
-        description: Primary Key
+        description: Primary Key, Integer
+      - name: country_name
+        description: String, countries names
+      - name: region_name
+        description: String, regions names
   - name: dim_customer
-    config:
-      +required_docs: true
+    description: contains info about customers
     columns:
       - name: customer_id
-        description: Primary Key
+        description: Primary Key, Integer
       - name: geography_id
-        description: Foreign Key -> dim_geography
+        description: Foreign Key, Integer -> dim_geography
         data_tests:
           - relationships:
               field: geography_id
               to: ref('dim_geography')
+      - name: customer_code
+        description: String, alfanumeric code associated with the customer
+      - name: account_balance
+        description: Number, monetary balance associated with the customer's account at the time of extraction
+      - name: market_segment
+        description: String, customer's business segment or category
+      - name: encrypted_address
+        description: String, customer's address stored in encrypted form
+      - name: phone
+        description: String, customer's primary contact phone number
+      - name: is_high_value_customer
+        description: Boolean, flag indicating whether the customer is classified as high value
   - name: dim_priority
     description: associates a code to the different orders urgency messages
-    config:
-      +required_docs: true
     columns:
       - name: priority_id
-        description: Primary Key
+        description: Primary Key, Integer
+      - name: description
+        description: String, associated urgency message
   - name: dim_part
     description: contains info about sold parts for sale lines
-    config:
-      +required_docs: true
     columns:
       - name: part_id
-        description: Primary Key
+        description: Primary Key, Integer
+      - name: manufacturer
+        description: Integer, manufacturer code
+      - name: brand
+        description: Integer, brand code
+      - name: colour_description
+        description: String, colour details of the part
+      - name: material_description
+        description: String, material details of the part
+      - name: container
+        description: String, packaging description of the delivery
+      - name: retail_price
+        description: Number, standard retail selling price of the part
+      - name: size_cm
+        description: Integer, physical size of the part in centimeters
   - name: dim_supplier
     description: contains info about sold parts suppliers for sale lines
-    config:
-      +required_docs: true
     columns:
       - name: supplier_id
-        description: Primary Key
+        description: Primary Key, Integer
       - name: geography_id
-        description: Foreign Key -> dim_geography
+        description: Foreign Key, Integer -> dim_geography
         data_tests:
           - relationships:
               field: geography_id
               to: ref('dim_geography')
+      - name: supplier_code
+        description: String, alfanumeric code associated with the supplier
+      - name: account_balance
+        description: Number, monetary balance associated with the supplier's account at the time of extraction
+      - name: encrypted_address
+        description: String, supplier's address stored in encrypted form
+      - name: phone
+        description: String, supplier's primary contact phone number
   - name: dim_date
     description: contains a list of all dates stored in the database
-    config:
-      +required_docs: true
     columns:
       - name: date_id
-        description: Primary Key. ATTENTION - this model must always be full refreshed, in order to be able to generate new PKs for new entries
+        description: Primary Key, String hash code. ATTENTION - this model must always be full refreshed, in order to be able to generate new PKs for new entries
         data_tests:
           - unique
           - not_null
+      - name: date_value
+        description: actual date value
   - name: fact_sale_line
     description: contains all the info about sale process
-    config:
-      +required_docs: true
     columns:
       - name: sale_line_id
-        description: Primary Key. ATTENTION - this model must always be full refreshed, in order to be able to generate new PKs for new entries
+        description: Primary Key, String hash code. ATTENTION - this model must always be full refreshed, in order to be able to generate new PKs for new entries
         data_tests:
           - unique
           - not_null
+      - name: order_id
+        description: Integer, id associated to an order
+        data_tests:
+          - not_null
       - name: part_id
-        description: Foreign Key -> dim_part
+        description: Foreign Key, Integer -> dim_part
         data_tests:
           - relationships:
               field: part_id
               to: ref('dim_part')
       - name: supplier_id
-        description: Foreign Key -> dim_supplier
+        description: Foreign Key, Integer -> dim_supplier
         data_tests:
           - relationships:
               field: supplier_id
               to: ref('dim_supplier')
+      - name: line_number
+        description: Integer, number of the sale line
       - name: customer_id
-        description: Foreign Key -> dim_customer
+        description: Foreign Key, Integer -> dim_customer
         data_tests:
           - relationships:
               field: customer_id
               to: ref('dim_customer')
       - name: order_date_id
-        description: Foreign Key -> dim_date
+        description: Foreign Key, String hash code -> dim_date
         data_tests:
           - relationships:
               field: date_id
               to: ref('dim_date')
       - name: ship_date_id
-        description: Foreign Key -> dim_date
+        description: Foreign Key, String hash code -> dim_date
         data_tests:
           - relationships:
               field: date_id
               to: ref('dim_date')
       - name: commit_date_id
-        description: Foreign Key -> dim_date
+        description: Foreign Key, String hash code -> dim_date
         data_tests:
           - relationships:
               field: date_id
               to: ref('dim_date')
       - name: receipt_date_id
-        description: Foreign Key -> dim_date
+        description: Foreign Key, String hash code -> dim_date
         data_tests:
           - relationships:
               field: date_id
               to: ref('dim_date')
+      - name: order_status
+        description: String, order code indicating the current state of the order (F = Filled, O = Open, P = Pending)
+      - name: line_status
+        description: String, line code indicating the current state of the line (O = Open, F = Filled).
+      - name: return_flag
+        description: String, return indicator specifying whether the item was returned (N = Not returned, R = Returned, A = Returned with adjustment)
       - name: order_priority
-        description: Foreign Key -> dim_priority
+        description: Foreign Key, Integer -> dim_priority
         data_tests:
           - relationships:
               field: priority_id
               to: ref('dim_priority')
+      - name: order_clerk
+        description: String, alfanumeric identifier of the clerk responsible for the order
+      - name: stock_quantity
+        description: Integer, quantity of stock availability for the item at the time of ordering
+      - name: discount_percentage
+        description: Integer, percentage discount applied to the line item
+      - name: tax_percentage
+        description: Integer, tax rate applied to the line item
+      - name: order_gross_price
+        description: Number, gross price of the entire order before discounts and taxes
+      - name: order_net_price
+        description: Number, net price of the entire order after applying discounts and taxes
+      - name: line_gross_price
+        description: Number, gross price of the line item before discounts and taxes
+      - name: line_discount_amount
+        description: Number, discount amount applied to the line item
       - name: line_tax_amount
-        description: calculated as ROUND((line_gross_price * (1 - discount_percentage / 100.0) * (tax_percentage / 100.0)), 2)
+        description: Number, calculated as ROUND((line_gross_price * (1 - discount_percentage / 100.0) * (tax_percentage / 100.0)), 2)
+      - name: line_net_price
+        description: Number, net price of the line item after applying discounts and taxes
+      - name: supply_cost
+        description: Number, cost paid to the supplier for one line item
+      - name: sold_quantity
+        description: Integer, quantity of units sold in the line item
       - name: line_profit
-        description: calulated as ROUND((line_net_price - (supply_cost * sold_quantity)), 2)
+        description: Number, calulated as ROUND((line_net_price - (supply_cost * sold_quantity)), 2)
       - name: is_discounted
-        description: true when applied discount, false otherwise
+        description: Boolean, true when applied discount false otherwise
         data_tests:
           - accepted_values:
               values:
                 - TRUE
                 - FALSE
+      - name: ship_mode
+        description: String, shipping mode used for the line item (TRUCK, AIR, MAIL, SHIP, RAIL, FOB, REG AIR)
+      - name: ship_instructions
+        description: String, special shipping instructions for the line item (COLLECT COD, NONE, DELIVER IN PERSON, TAKE BACK RETURN)

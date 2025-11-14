@@ -27,6 +27,7 @@ models:
     marts:
       +materialized: view
       +schema: "MARTS"
+      +required_docs: true
   
 on-run-end:
   - "{{ grant_schema_usage_and_select_permissions_to_public(target.database, ['STAGING', 'TRANSFORMATION', 'MARTS']) }}"
