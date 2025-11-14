@@ -1,5 +1,5 @@
 models:
-  - name: stg_tpch_sf1__customers
+  - name: stg_tpch_sf1__customer
     columns:
       - name: customer_id
         data_tests:
