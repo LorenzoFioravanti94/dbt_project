@@ -17,7 +17,7 @@ final_customer AS(
     CASE
         WHEN t.account_balance > a.avg_b THEN TRUE
         ELSE FALSE
-    END AS high_value_customer
+    END AS is_high_value_customer
     FROM trans_customer AS t
     CROSS JOIN avg_balance AS a
 )

@@ -27,7 +27,7 @@
 {# Actual test: select any orders that exceed the allowed tolerance #}
 WITH order_discrepancy AS (
     SELECT order_id, order_net_price, SUM(line_net_price) AS sum_line_net_price, ABS(SUM(line_net_price) - order_net_price) AS diff
-    FROM {{ ref('trans_tpch_sf1__sale_info') }}
+    FROM {{ ref('fact_sale_line') }}
     GROUP BY order_id, order_net_price
 )
 SELECT *
