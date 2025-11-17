@@ -35,12 +35,12 @@ FROM line_discrepancy;
 
 {# Actual test: select any lines where the discrepancy exceeds the allowed tolerance #}
 WITH line_discrepancy AS (
-    SELECT order_id, part_id, supplier_id, line_number,
+    SELECT sale_line_id,
            ABS(
                line_gross_price * (1 - discount_percentage / 100.0) * (1 + tax_percentage / 100.0)
-               - (line_gross_price - line_discount_value) * (1 + tax_percentage / 100.0)
+               - (line_gross_price - line_discount_amount) * (1 + tax_percentage / 100.0)
            ) AS diff
-    FROM {{ ref('trans_tpch_sf1__sale_info') }}
+    FROM {{ ref('fact_sale_line') }}
 )
 SELECT *
 FROM line_discrepancy
