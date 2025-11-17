@@ -15,7 +15,7 @@ sources:
             error_after:
               count: 20
               period: day
-          loaded_at_field: o_orderdate
+          loaded_at_field: "CAST(o_orderdate AS TIMESTAMP)"
       - name: lineitem
       - name: part
       - name: supplier
