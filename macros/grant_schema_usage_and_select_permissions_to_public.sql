@@ -14,7 +14,7 @@
     {% for schema in schemas %}
 
         {# Esegui grants solo se lo schema inizia con "prod_" #}
-        {% if schema | lower.startswith('prod_') %}
+        {% if schema[:4] | lower == 'prod' %}
 
             {% set sql_check %}
                 SELECT COUNT(*) AS schema_exists
