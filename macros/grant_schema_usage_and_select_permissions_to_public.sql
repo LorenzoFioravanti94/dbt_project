@@ -15,14 +15,15 @@
 
         {# Check if schema exists #}
         {% set sql_check %}
-            select count(*) as exists
-            from {{ database }}.information_schema.schemata
-            where schema_name = '{{ schema | upper }}'
+            SELECT COUNT(*) AS schema_exists
+            FROM {{ database }}.information_schema.schemata
+            WHERE UPPER(schema_name) = UPPER('{{ schema }}')
         {% endset %}
 
         {% set result = run_query(sql_check) %}
 
         {% if result and result.columns[0].values()[0] == 1 %}
+            {{ log("Granting privileges on existing schema: " ~ schema, info=True) }}
             grant usage on schema {{ database }}.{{ schema | upper }} to role PUBLIC;
             grant select on all tables in schema {{ database }}.{{ schema | upper }} to role PUBLIC;
             grant select on all views in schema {{ database }}.{{ schema | upper }} to role PUBLIC;
