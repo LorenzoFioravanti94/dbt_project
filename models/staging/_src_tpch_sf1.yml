@@ -12,9 +12,6 @@ sources:
             warn_after:
               count: 8
               period: hour
-            error_after:
-              count: 20
-              period: day
           loaded_at_field: "CAST(o_orderdate AS TIMESTAMP)"
       - name: lineitem
       - name: part
