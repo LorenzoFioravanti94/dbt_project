@@ -1,7 +1,7 @@
 {# 
     Macro to grant USAGE on each schema and SELECT permissions to the
     PUBLIC role for all tables and views in the specified schemas.
-    Always works on PROD schema suffixed with _STAGING, _TRANSFORMATION, _MARTS
+    Always works on target.schema suffixed with _STAGING, _TRANSFORMATION, _MARTS
 #}
 {% macro grant_schema_usage_and_select_permissions_to_public(database) %}
 
@@ -13,28 +13,22 @@
 
     {% for schema in schemas %}
 
-        {# Esegui grants solo se lo schema inizia con "prod_" #}
-        {% if schema[:4] | lower == 'prod' %}
+        {# Check if schema exists #}
+        {% set sql_check %}
+            SELECT COUNT(*) AS schema_exists
+            FROM {{ database }}.information_schema.schemata
+            WHERE UPPER(schema_name) = UPPER('{{ schema }}')
+        {% endset %}
 
-            {% set sql_check %}
-                SELECT COUNT(*) AS schema_exists
-                FROM {{ database }}.information_schema.schemata
-                WHERE UPPER(schema_name) = UPPER('{{ schema }}')
-            {% endset %}
+        {% set result = run_query(sql_check) %}
 
-            {% set result = run_query(sql_check) %}
-
-            {% if result and result.columns[0].values()[0] == 1 %}
-                {{ log("Granting privileges on existing schema: " ~ schema, info=True) }}
-                grant usage on schema {{ database }}.{{ schema | upper }} to role PUBLIC;
-                grant select on all tables in schema {{ database }}.{{ schema | upper }} to role PUBLIC;
-                grant select on all views in schema {{ database }}.{{ schema | upper }} to role PUBLIC;
-            {% else %}
-                {{ log("Skipping grants for missing schema: " ~ schema, info=True) }}
-            {% endif %}
-
+        {% if result and result.columns[0].values()[0] == 1 %}
+            {{ log("Granting privileges on existing schema: " ~ schema, info=True) }}
+            grant usage on schema {{ database }}.{{ schema | upper }} to role PUBLIC;
+            grant select on all tables in schema {{ database }}.{{ schema | upper }} to role PUBLIC;
+            grant select on all views in schema {{ database }}.{{ schema | upper }} to role PUBLIC;
         {% else %}
-            {{ log("Skipping grants for non-production schema: " ~ schema, info=True) }}
+            {{ log("Skipping grants for missing schema: " ~ schema, info=True) }}
         {% endif %}
 
     {% endfor %}
