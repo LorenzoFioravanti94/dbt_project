@@ -12,9 +12,25 @@
     ] %}
 
     {% for schema in schemas %}
-        grant usage on schema {{ database }}.{{ schema | upper }} to role PUBLIC;
-        grant select on all tables in schema {{ database }}.{{ schema | upper }} to role PUBLIC;
-        grant select on all views in schema {{ database }}.{{ schema | upper }} to role PUBLIC;
+
+        {# Check if schema exists #}
+        {% set sql_check %}
+            select count(*) as exists
+            from {{ database }}.information_schema.schemata
+            where schema_name = '{{ schema | upper }}'
+        {% endset %}
+
+        {% set result = run_query(sql_check) %}
+
+        {% if result and result.columns[0].values()[0] == 1 %}
+            grant usage on schema {{ database }}.{{ schema | upper }} to role PUBLIC;
+            grant select on all tables in schema {{ database }}.{{ schema | upper }} to role PUBLIC;
+            grant select on all views in schema {{ database }}.{{ schema | upper }} to role PUBLIC;
+        {% else %}
+            {{ log("Skipping grants for missing schema: " ~ schema, info=True) }}
+        {% endif %}
+
     {% endfor %}
 
 {% endmacro %}
+
