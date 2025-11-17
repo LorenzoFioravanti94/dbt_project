@@ -15,7 +15,7 @@ sources:
             error_after:
               count: 20
               period: day
-          loaded_at_field: loaded_at_field
+          loaded_at_field: o_orderdate
       - name: lineitem
       - name: part
       - name: supplier
